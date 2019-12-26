@@ -1,0 +1,4 @@
+.vscode
+.firebase
+node_modules
+dist
