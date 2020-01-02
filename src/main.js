@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import * as axios from 'axios'
 import * as LuigiClient from '@kyma-project/luigi-client'
 import * as firebase from 'firebase';
 import * as uuid from 'uuid/v4';
@@ -20,8 +19,8 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 let userId = ''
 
-
 LuigiClient.addInitListener((context) => {
+  console.log('Context', context)
   var credential = firebase.auth.GoogleAuthProvider.credential(
     context.idToken);
 
