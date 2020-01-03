@@ -6,45 +6,47 @@
 </head>
 
 <body>
-    <div id="app" style="display: none;">
-
-        <main class="fd-page">
-            <header class="fd-page__header fd-has-background-color-background-2">
-                <h1>To-Do</h1>
-            </header>
-            <div class="fd-page__content fd-has-background-color-neutral-2">
-                <section class="fd-section">
-                    <form class="fd-input-group fd-has-margin-bottom-medium" v-on:submit.prevent>
-                        <input class="fd-input fd-input-group__input" type="text" placeholder="Add new todo item"
-                            v-model="newTodo.description" maxlength="280">
-                        <span class="fd-input-group__addon fd-input-group__addon--button">
-                            <button type="submit" class="fd-input-group__button fd-button--light" v-on:click="addNew()">
-                                Add
-                            </button>
-                        </span>
-                    </form>
-                    <ul class="fd-list">
-                        <li class="fd-list__item" v-for="todo in todos">
-                            <label class="todo-label" v-bind:for="todo.id">
-                                <input v-bind:id="todo.id" class="fd-checkbox fd-has-margin-right-medium"
-                                    type="checkbox" v-on:change="updateState(todo)" v-model="todo.isDone">
-                                <span class="fd-list__title"
-                                    v-bind:class="{'done': todo.isDone}">{{todo.description}}</span>
-                            </label>
-                            <button class="fd-button" type="button" v-on:click="remove(todo)"><span class="sap-icon--delete"></span></button>
-                        </li>
-                    </ul>
-
-
-                </section>
-
-            </div>
-        </main>
+  <div id="app" style="display: none;">
+    <main class="fd-page">
+      <header class="fd-page__header fd-has-background-color-neutral-2">
+        <div class="fd-action-bar">
+          <div class="fd-action-bar__header">
+            <h3 class="fd-action-bar__title">To-Do</h3>
+            <p class="fd-action-bar__description">
+              Prepare to-do list for your trip
+            </p>
+          </div>
+      </header>
+      <div class="fd-page__content fd-has-background-color-neutral-2">
+        <section class="fd-section">
+          <form class="fd-input-group fd-has-margin-bottom-medium" v-on:submit.prevent>
+            <input class="fd-input fd-input-group__input" type="text" placeholder="Add new todo item" v-model="newTodo.description" maxlength="280">
+            <span class="fd-input-group__addon fd-input-group__addon--button">
+              <button type="submit" class="fd-input-group__button fd-button--light" v-on:click="addNew()">
+                Add
+              </button>
+            </span>
+          </form>
+          <ul class="fd-list">
+            <li class="fd-list__item" v-for="todo in todos">
+              <label class="todo-label" v-bind:for="todo.id">
+                <input v-bind:id="todo.id" class="fd-checkbox fd-has-margin-right-medium" type="checkbox" v-on:change="updateState(todo)" v-model="todo.isDone">
+                <span class="fd-list__title" v-bind:class="{'done': todo.isDone}">{{todo.description}}</span>
+              </label>
+              <button class="fd-button" type="button" v-on:click="remove(todo)"><span class="sap-icon--delete"></span></button>
+            </li>
+          </ul>
 
 
+        </section>
+
+      </div>
+    </main>
 
 
-    </div>
+
+
+  </div>
 
 </body>
 
