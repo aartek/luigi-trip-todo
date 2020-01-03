@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import * as LuigiClient from '@kyma-project/luigi-client'
-import * as firebase from 'firebase';
-import * as uuid from 'uuid/v4';
+import * as firebase from 'firebase/app'
+import 'firebase/auth';
+import 'firebase/database';;
 
 import './style.scss'
 
@@ -17,72 +18,70 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-let userId = ''
 
 LuigiClient.addInitListener((context) => {
-  console.log('Context', context)
-  var credential = firebase.auth.GoogleAuthProvider.credential(
+  const credential = firebase.auth.GoogleAuthProvider.credential(
     context.idToken);
 
   firebase.auth().signInWithCredential(credential).catch(function (error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    // The email of the user's account used.
-    var email = error.email;
-    // The firebase.auth.AuthCredential type that was used.
-    var credential = error.credential;
-    // ...
+    console.error(error)
   });
 })
-
-
-
-
-const app = new Vue({
-  el: '#app',
-  created: function(){
-    document.getElementById('app').style.display = ''
-  },
-  data: {
-    todos: [],
-    newTodo: {
-      description: ''
-    }
-  },
-  methods: {
-    updateState(todo) {
-      database.ref(`users/${userId}/tasks/${todo.uuid}/isDone`).set(todo.isDone)
-    },
-    async addNew() {
-      const newItem = {
-        isDone: false,
-        description: this.newTodo.description
-      };
-      this.todos.push(newItem)
-      this.newTodo.description = ''
-      database.ref(`users/${userId}/tasks/${uuid()}`).set(newItem);
-    },
-    async remove(todo){
-      database.ref(`users/${userId}/tasks/${todo.uuid}`).remove(); 
-    }
-  }
-})
-
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     console.log('user authenticated', user)
-    userId = firebase.auth().currentUser.uid
+    const userId = firebase.auth().currentUser.uid
 
-    var tasksRef = firebase.database().ref(`users/${userId}/tasks`);
-    tasksRef.on('value', function (snapshot) {
-      console.log('data changed', snapshot.val())
-      app.$data.todos.length = 0
-      const value = snapshot.val()
-      Object.keys(value).forEach(key => 
-        app.$data.todos.push(Object.assign({uuid: key},value[key])))
-    });
-
+    const app = startApp(userId)
+    listenForDataChange(app, userId)
   }
 });
+
+
+function startApp(userId){
+  return new Vue({
+    el: '#app',
+    created: function () {
+      document.getElementById('app').style.display = ''
+    },
+    data: {
+      todos: [],
+      newTodo: {
+        description: ''
+      }
+    },
+    methods: {
+      updateState(todo) {
+        database.ref(`users/${userId}/tasks/${todo.id}/isDone`).set(todo.isDone)
+      },
+      async addNew() {
+        const newItem = {
+          isDone: false,
+          description: this.newTodo.description
+        };
+        this.todos.push(newItem)
+        this.newTodo.description = ''
+        database.ref(`users/${userId}/tasks`).push(newItem);
+      },
+      async remove(todo) {
+        database.ref(`users/${userId}/tasks/${todo.id}`).remove();
+      }
+    }
+  })
+}
+
+
+function listenForDataChange(app, userId) {
+  var tasksRef = firebase.database().ref(`users/${userId}/tasks`);
+
+  tasksRef.on('value', function (snapshot) {
+    app.$data.todos = []
+    snapshot.forEach(item => {
+      const todoItem = Object.assign({
+        id: item.key
+      }, item.val())
+      app.$data.todos.push(todoItem)
+    })
+  })
+}

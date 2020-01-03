@@ -25,13 +25,13 @@
                     </form>
                     <ul class="fd-list">
                         <li class="fd-list__item" v-for="todo in todos">
-                            <label class="todo-label" v-bind:for="todo.uuid">
-                                <input v-bind:id="todo.uuid" class="fd-checkbox fd-has-margin-right-medium"
+                            <label class="todo-label" v-bind:for="todo.id">
+                                <input v-bind:id="todo.id" class="fd-checkbox fd-has-margin-right-medium"
                                     type="checkbox" v-on:change="updateState(todo)" v-model="todo.isDone">
                                 <span class="fd-list__title"
                                     v-bind:class="{'done': todo.isDone}">{{todo.description}}</span>
                             </label>
-                            <button class="fd-button" type="button" v-on:click="remove(todo)">Delete</button>
+                            <button class="fd-button" type="button" v-on:click="remove(todo)"><span class="sap-icon--delete"></span></button>
                         </li>
                     </ul>
 
