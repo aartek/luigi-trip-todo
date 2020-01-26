@@ -1,7 +1,19 @@
+# ToDo list
+
+ToDo list for trip planner.
+Requires https://github.com/aartek/luigi-trip to work properly.
+
+
+## Running
 ```
 npm install
 ```
 
 ```
-npx webpack --config webpack.dev.js --watch
+npm start
+```
+
+## Building for production
+```
+npm run build
 ```
