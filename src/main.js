@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as LuigiClient from '@kyma-project/luigi-client'
+import * as LuigiClient from '@luigi-project/client'
 import * as firebase from 'firebase/app'
 import 'firebase/auth';
 import 'firebase/database';;
