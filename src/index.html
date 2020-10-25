@@ -19,7 +19,7 @@
       <section class="fd-section">
         <div class="fd-panel">
           <div class="fd-panel__body">
-            <form class="fd-has-margin-bottom-medium" v-on:submit.prevent>
+            <form class="fd-has-margin-bottom-xs" v-on:submit.prevent>
               <div class="fd-form-item">
                 <div class="fd-input-group">
                   <input class="fd-input fd-input-group__input" type="text" placeholder="Add new todo item"
@@ -32,6 +32,9 @@
                 </div>
               </div>
             </form>
+
+            <button class="fd-button fd-has-margin-bottom-xs" v-on:click="uncheckAll()">Uncheck all</button>
+
             <ul class="fd-list">
               <li class="fd-list__item" v-for="todo in todos">
                 <div class="fd-form-item todo-label">

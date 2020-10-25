@@ -66,6 +66,12 @@ function startApp(userId){
       },
       async remove(todo) {
         database.ref(`users/${userId}/tasks/${todo.id}`).remove();
+      },
+      uncheckAll() {
+        this.todos.forEach(todo => {
+          todo.isDone = false
+          this.updateState(todo)
+        })
       }
     }
   })
